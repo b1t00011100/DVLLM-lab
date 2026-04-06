@@ -54,8 +54,8 @@ The application includes configurable security levels to demonstrate both vulner
 ## Project Structure
 
 dvllm-lab/
-│── app.py
-│── templates/
+│── app.py \n
+│── templates/ 
 │── static/
 │── database.db (excluded)
 │── README.md
@@ -67,6 +67,7 @@ dvllm-lab/
 
 ### 1. Clone the repository
 git clone https://github.com/b1t00011100/DVLLM-lab.git
+
 cd DVLLM-lab
 
 ### 2. Install dependencies
