@@ -84,25 +84,29 @@ Default Credentials<br>
 `
 <br>
 
-Example Attack Chain
+Example Attack Chain<br>
+<br>
 Exploit SQL Injection to bypass login<br>
 Access admin panel<br>
 View user data and chats<br>
 Use SSRF to query internal endpoints<br>
 Extract sensitive information (e.g., API key)<br>
-Security Note
 
+Security Note
+<br>
 This application is intentionally vulnerable and designed strictly for educational and testing purposes.
 
-Do not deploy in production environments.
-
-Key Learnings
-Interaction between LLM context and traditional web vulnerabilities
-Risks of unvalidated tool execution (SSRF)
-Impact of prompt injection and memory poisoning
-Importance of input validation and output encoding
-Differences between vulnerable and secure implementations
+<strong>Do not deploy in production environments.</strong>
+<br>
+Key Learnings<br>
+Interaction between LLM context and traditional web vulnerabilities<br>
+Risks of unvalidated tool execution (SSRF)<br>
+Impact of prompt injection and memory poisoning<br>
+Importance of input validation and output encoding<br>
+Differences between vulnerable and secure implementations<br>
+<br>
 Project Structure
+<br>
 dvllm-lab/<br>
 ├── app.py<br>
 ├── templates/<br>
@@ -112,6 +116,8 @@ dvllm-lab/<br>
 ├── README.md<br>
 ├── .gitignore<br>
 ├── .env.example<br>
+
+<br>
 
 Author
 Aayush Bajpai
