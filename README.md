@@ -46,48 +46,49 @@ The application includes configurable security levels to demonstrate both vulner
 
 ### 1. Clone the repository
 
-`git clone https://github.com/b1t00011100/DVLLM-lab.git`
-`cd DVLLM-lab`
+`git clone https://github.com/b1t00011100/DVLLM-lab.git`<br>
+`cd DVLLM-lab`<br>
 2. Install dependencies
-`pip install flask requests beautifulsoup4 python-dotenv`
+`pip install flask requests beautifulsoup4 python-dotenv`<br>
 3. (Optional) Run local LLM
 
-Ensure Ollama is running with Mistral (or any supported model):
+Ensure Ollama is running with Mistral (or any supported model):<br>
 
-`ollama run mistral`
+`ollama run mistral`<br>
 
 You can change the model inside the mistral_llm() function if needed.
 
-4. Setup environment variables
-`cp .env.example .env`
+4. Setup environment variables<br>
+`cp .env.example .env`<br>
 
 Update values in .env if required.
 
 5. Setup database
-`python init_db.py`
-`python set_rolesdb.py`
+`python init_db.py`<br>
+`python set_rolesdb.py`<br>
 
-7. Run the application
+7. Run the application<br>
 `python app.py`
 
 8. Access the application
 
-Open in browser:
+Open in browser:<br>
 
 http://127.0.0.1:5000/
 
-Default Credentials
+Default Credentials<br>
 
 `Username: admin
 Password: admin@123
 `
+<br>
 
 Example Attack Chain
-Exploit SQL Injection to bypass login
-Access admin panel
-View user data and chats
-Use SSRF to query internal endpoints
-Extract sensitive information (e.g., API key)
+Exploit SQL Injection to bypass login<br>
+Access admin panel<br>
+View user data and chats<br>
+Use SSRF to query internal endpoints<br>
+Extract sensitive information (e.g., API key)<br>
 Security Note
 
 This application is intentionally vulnerable and designed strictly for educational and testing purposes.
@@ -101,15 +102,16 @@ Impact of prompt injection and memory poisoning
 Importance of input validation and output encoding
 Differences between vulnerable and secure implementations
 Project Structure
-dvllm-lab/
-├── app.py
-├── templates/
-├── static/
-├── init_db.py
-├── set_rolesdb.py
-├── README.md
-├── .gitignore
-├── .env.example
-Author
+dvllm-lab/<br>
+├── app.py<br>
+├── templates/<br>
+├── static/<br>
+├── init_db.py<br>
+├── set_rolesdb.py<br>
+├── README.md<br>
+├── .gitignore<br>
+├── .env.example<br>
 
+Author
+Aayush Bajpai
 Developed as part of a security-focused project to explore LLM and web application vulnerabilities.
