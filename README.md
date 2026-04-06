@@ -74,7 +74,7 @@ cd DVLLM-lab
 pip install flask requests beautifulsoup4
 
 ### 3. (Optional) Run local LLM
-Ensuer Ollama is running with Mistral (or any other model just change the model in def mistralllm()):<br>
+Ensure Ollama is running with Mistral (or any other model just change the model in def mistralllm() function):<br>
 ollama run mistral 
 
 ### 4. Run the application
