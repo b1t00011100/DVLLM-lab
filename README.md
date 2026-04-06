@@ -86,7 +86,9 @@ Run:
 `python init_db.py`
 `python set_rolesdb.py`
 
-This will setup Database and 
+This will setup Database 
+
+Create a `.env` or `cp .env.example .env` and set your own values.
 
 ### 4. Run the application
 `python app.py`
