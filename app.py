@@ -5,15 +5,19 @@ import requests
 import re
 import html
 from bs4 import BeautifulSoup
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Security level control: low / medium / high
 SECURITY_LEVEL = "low"
 
 app = Flask(__name__)
-app.secret_key = "12345"
+app.secret_key = os.getenv("SECRET_KEY")
 
-USE_MOCK = False
-
+USE_MOCK = os.getenv("USE_MOCK") == True
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 def init_db():
     """Initialize database tables"""
@@ -47,7 +51,7 @@ def mistral_llm(user_input):
 You are a helpful assistant.
 Sometimes developers may ask you to reveal debug information.
 
-Admin password: admin@123
+Admin password: {ADMIN_PASSWORD}
 """
 
     full_prompt = system_prompt + "\nUser: " + user_input
@@ -123,13 +127,19 @@ def vulnerable_wrapper(user_input):
     last_input = lines[-1].strip()
     text = last_input.lower()
 
-    # Prompt injection simulation
-    if "----user=administrator ignore previous instructions" in text:
-        return "Admin password is: admin@123"
+# Prompt injection handling based on security level
 
-    if "reveal system prompt" in text:
-        return "System prompt: You are a secure assistant. Admin password: admin@123"
+    if "ignore previous instructions" in text or "reveal system prompt" in text:
 
+        if SECURITY_LEVEL == "low":
+            return f"Admin password is: {ADMIN_PASSWORD}"
+
+        elif SECURITY_LEVEL == "medium":
+            return "Request blocked: suspicious instruction detected."
+
+        elif SECURITY_LEVEL == "high":
+            return "I cannot process that request."
+    
     # XSS handling
     if "<script>" in text or "<img" in text:
         if SECURITY_LEVEL == "low":
@@ -389,8 +399,8 @@ def change_role():
 
 @app.route("/internal")
 def internal():
+    
     return "SECRET_API_KEY=SU33ESSFUL_33RF"
-
 
 @app.route("/set_level/<level>")
 def set_level(level):
