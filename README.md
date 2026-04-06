@@ -84,7 +84,7 @@ Default Credentials<br>
 `
 <br>
 
-Example Attack Chain<br>
+## Example Attack Chain<br>
 <br>
 Exploit SQL Injection to bypass login<br>
 Access admin panel<br>
@@ -92,33 +92,36 @@ View user data and chats<br>
 Use SSRF to query internal endpoints<br>
 Extract sensitive information (e.g., API key)<br>
 
-Security Note
-<br>
-This application is intentionally vulnerable and designed strictly for educational and testing purposes.
 
-<strong>Do not deploy in production environments.</strong>
-<br>
-Key Learnings<br>
-Interaction between LLM context and traditional web vulnerabilities<br>
-Risks of unvalidated tool execution (SSRF)<br>
-Impact of prompt injection and memory poisoning<br>
-Importance of input validation and output encoding<br>
-Differences between vulnerable and secure implementations<br>
-<br>
-Project Structure
-<br>
-dvllm-lab/<br>
-├── app.py<br>
-├── templates/<br>
-├── static/<br>
-├── init_db.py<br>
-├── set_rolesdb.py<br>
-├── README.md<br>
-├── .gitignore<br>
-├── .env.example<br>
+---
 
-<br>
+## Security Note
 
-Author
+This application is intentionally vulnerable and is designed strictly for educational and testing purposes.
+
+Do not deploy in production environments.
+
+---
+
+## Key Learnings
+
+- Interaction between LLM context and traditional web vulnerabilities
+- Risks of unvalidated tool execution (SSRF)
+- Impact of prompt injection and memory poisoning
+- Importance of input validation and output encoding
+- Differences between vulnerable and secure implementations
+
+---
+
+## Future Improvements
+
+- Advanced prompt injection scenarios
+- Logging and monitoring of attacks
+- Automated vulnerability testing scripts
+- Enhanced UI for attack visualization
+
+---
+
+## Author
 Aayush Bajpai
 Developed as part of a security-focused project to explore LLM and web application vulnerabilities.
