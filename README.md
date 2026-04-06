@@ -59,6 +59,9 @@ dvllm-lab/<br>
 │── static/<br>
 │── database.db (excluded)<br>
 │── README.md<br>
+│── .gitignore<br>
+│── .env.example
+
 
 
 ---
@@ -76,6 +79,14 @@ dvllm-lab/<br>
 ### 3. (Optional) Run local LLM
 Ensure Ollama is running with Mistral (or any other model just change the model in def mistralllm() function):<br>
 `ollama run mistral`
+
+### Setup Database
+
+Run:
+`python init_db.py`
+`python set_rolesdb.py`
+
+This will setup Database and 
 
 ### 4. Run the application
 `python app.py`
