@@ -74,7 +74,7 @@ cd DVLLM-lab
 pip install flask requests beautifulsoup4
 
 ### 3. (Optional) Run local LLM
-Ensuer Ollama is running with Mistral (or any other model just change the model in def mistralllm()):
+Ensuer Ollama is running with Mistral (or any other model just change the model in def mistralllm()):<br>
 ollama run mistral 
 
 ### 4. Run the application
@@ -115,7 +115,7 @@ Do not deploy in production environments.
 
 ## Author
 
-Aayush Bajpai
+Aayush Bajpai<br>
 Developed as part of a security-focused project to explore LLM and web application vulnerabilities.
 
 
