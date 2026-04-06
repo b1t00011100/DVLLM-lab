@@ -66,19 +66,19 @@ dvllm-lab/<br>
 ## Setup Instructions
 
 ### 1. Clone the repository
-git clone https://github.com/b1t00011100/DVLLM-lab.git
+`git clone https://github.com/b1t00011100/DVLLM-lab.git`
 
-cd DVLLM-lab
+`cd DVLLM-lab`
 
 ### 2. Install dependencies
-pip install flask requests beautifulsoup4
+`pip install flask requests beautifulsoup4`
 
 ### 3. (Optional) Run local LLM
 Ensure Ollama is running with Mistral (or any other model just change the model in def mistralllm() function):<br>
-ollama run mistral 
+`ollama run mistral`
 
 ### 4. Run the application
-python app.py
+`python app.py`
 
 ### 5. Access in browser
 http://127.0.0.1:5000/
