@@ -86,11 +86,11 @@ Default Credentials<br>
 
 ## Example Attack Chain<br>
 <br>
-Exploit SQL Injection to bypass login<br>
-Access admin panel<br>
-View user data and chats<br>
-Use SSRF to query internal endpoints<br>
-Extract sensitive information (e.g., API key)<br>
+ - Exploit SQL Injection to bypass login<br>
+ - Access admin panel<br>
+ - View user data and chats<br>
+ - Use SSRF to query internal endpoints<br>
+ - Extract sensitive information (e.g., API key)<br>
 
 
 ---
