@@ -48,8 +48,10 @@ The application includes configurable security levels to demonstrate both vulner
 
 `git clone https://github.com/b1t00011100/DVLLM-lab.git`<br>
 `cd DVLLM-lab`<br>
-2. Install dependencies
+
+2. Install dependencies<br>
 `pip install flask requests beautifulsoup4 python-dotenv`<br>
+
 3. (Optional) Run local LLM
 
 Ensure Ollama is running with Mistral (or any supported model):<br>
