@@ -85,7 +85,6 @@ Default Credentials<br>
 <br>
 
 ## Example Attack Chain<br>
-<br>
  - Exploit SQL Injection to bypass login<br>
  - Access admin panel<br>
  - View user data and chats<br>
