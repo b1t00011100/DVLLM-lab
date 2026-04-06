@@ -42,7 +42,7 @@ The application includes configurable security levels to demonstrate both vulner
 ---
 ## Project Structure
 
-dvllm-lab/<br>
+DVLLM-lab/<br>
 ├── app.py<br>
 ├── templates/<br>
 ├── static/<br>
