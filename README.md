@@ -134,5 +134,5 @@ This application is intentionally vulnerable and is designed strictly for educat
 ---
 
 ## Author
-Aayush Bajpai
+Aayush Bajpai <br>
 Developed as part of a security-focused project to explore LLM and web application vulnerabilities.
