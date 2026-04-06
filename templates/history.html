@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="top-bar">
+    <h2>Chat History</h2>
+    <a href="/chat">Back</a>
+</div>
+
+<div class="chat-container">
+    {% for msg in chats %}
+        <div class="message {{ msg[1] }}">
+            {{ msg[0] }}
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

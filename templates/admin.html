@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function togglePassword(id) {
+            const el = document.getElementById(id);
+            if (el.type === "password") {
+                el.type = "text";
+            } else {
+                el.type = "password";
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="top-bar">
+    <h2><span style="color:#4f8fbf;">DVLLM</span> Admin</h2>
+    <a href="/chat">Back</a>
+</div>
+
+<div class="admin-container">
+
+    <!-- USERS SECTION -->
+    <div class="admin-card">
+        <h3>Users</h3>
+
+      <table class="admin-table">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user[0] }}</td>
+        <td>{{ user[1] }}</td>
+
+        <td>
+            <div class="password-wrapper">
+                <input type="password" id="pass{{ user[0] }}" value="{{ user[2] }}" readonly>
+                <span onclick="togglePassword('pass{{ user[0] }}')" class="eye">👁</span>
+            </div>
+        </td>
+
+        <td>{{ user[3] }}</td>
+
+        
+     <td>
+    <form method="POST" action="/change_role" style="margin:0;">
+        <input type="hidden" name="user_id" value="{{ user[0] }}">
+        <input type="hidden" name="current_role" value="{{ user[3] }}">
+
+        <label class="switch">
+            <input type="checkbox"
+                   onchange="this.form.submit()"
+                   {% if user[3] == 'admin' %}checked{% endif %}>
+            <span class="slider"></span>
+        </label>
+    </form>
+</td>
+    </tr>
+    {% endfor %}
+</table>
+    </div>
+
+
+    <!-- CHAT HISTORY PER USER -->
+    <div class="admin-card">
+        <h3>User Conversations</h3>
+
+        {% for user in users %}
+            <div class="user-section">
+                <h4>User {{ user[0] }} - {{ user[1] }}</h4>
+
+                <div class="chat-container">
+                    {% for chat in chats %}
+                        {% if chat[0] == user[0] %}
+                            <div class="message {{ chat[2] }}">
+                                {{ chat[1] }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

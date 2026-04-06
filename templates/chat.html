@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="top-bar">
+    <h2>DVLLM</h2>
+    <div class="level-control">
+    <span class="level-label">Level:</span>
+
+    <select onchange="changeLevel(this.value)" class="level-dropdown">
+        <option value="low" {% if level=='low' %}selected{% endif %}>Low (Vulnerable)</option>
+        <option value="medium" {% if level=='medium' %}selected{% endif %}>Medium</option>
+        <option value="high" {% if level=='high' %}selected{% endif %}>High (Secure)</option>
+    </select>
+   
+</div>
+
+    <div class="top-bar-buttons">
+        <a href="/history_page?user_id={{ session['user_id'] }}" class="top-btn">History</a>
+
+        {% if session['role'] == 'admin' %}
+            <a href="/admin" class="top-btn">Admin</a>
+        {% endif %}
+
+        <a href="/logout" class="top-btn">Logout</a>
+    </div>
+    
+</div>
+
+<div class="chat-container" id="chat-container">
+   {% for message, type in history %}
+
+    {% if type == 'user' %}
+        <div class="user-message">
+            {{ message }}
+        </div>
+    {% else %}
+        <div class="bot-message">
+            {{ message | safe }}
+        </div>
+    {% endif %}
+
+{% endfor %}
+
+{% if temp_reply %}
+    <div class="bot-message">
+        {{ temp_reply | safe }}
+    </div>
+{% endif %}
+</div>
+
+<form method="POST" class="chat-form">
+    <input type="text" name="message" placeholder="Type your message..." required>
+    <button type="submit">Send</button>
+</form>
+<script>
+    const chatContainer = document.getElementById("chat-container");
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
+ <script>
+    function changeLevel(level) {
+    window.location.href = "/set_level/" + level;
+}
+</script>
+
+</body>
+</html>
