@@ -53,12 +53,12 @@ The application includes configurable security levels to demonstrate both vulner
 
 ## Project Structure
 
-dvllm-lab/
-│── app.py \n
-│── templates/ 
-│── static/
-│── database.db (excluded)
-│── README.md
+dvllm-lab/<br>
+│── app.py <br>
+│── templates/ <br>
+│── static/<br>
+│── database.db (excluded)<br>
+│── README.md<br>
 
 
 ---
