@@ -39,6 +39,18 @@ The application includes configurable security levels to demonstrate both vulner
 - Database: SQLite
 - LLM: Mistral (via Ollama) / Mock fallback
 - Frontend: HTML, CSS, JavaScript
+---
+## Project Structure
+
+dvllm-lab/<br>
+├── app.py<br>
+├── templates/<br>
+├── static/<br>
+├── init_db.py<br>
+├── set_rolesdb.py<br>
+├── README.md<br>
+├── .gitignore<br>
+├── .env.example<br>
 
 ---
 
@@ -98,7 +110,7 @@ Default Credentials<br>
 
 This application is intentionally vulnerable and is designed strictly for educational and testing purposes.
 
-Do not deploy in production environments.
+<strong>Do not deploy in production environments.</strong>
 
 ---
 
