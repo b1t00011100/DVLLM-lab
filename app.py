@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "devkey")
 
 USE_MOCK = os.getenv("USE_MOCK") == "True"
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD") or "admin@123"
 
 
 def get_security_level():
