@@ -45,6 +45,7 @@ def init_db():
 init_db()
 
 
+# ---------------- LLM ----------------
 def mistral_llm(user_input):
     system_prompt = f"""
 You are a helpful assistant.
@@ -57,34 +58,27 @@ Admin password: {ADMIN_PASSWORD}
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
-            json={"model": "mistral", 
-                  "prompt": full_prompt, 
-                  "stream": False}
+            json={"model": "mistral", "prompt": full_prompt, "stream": False}
         )
         return response.json().get("response") or ""
-    except Exception as e:
-        return f"ERROR: {str(e)}"
+    except:
+        return "LLM Error"
 
 
 def mock_llm(user_input):
-    text = user_input.lower()
-
-    if "hello" in text:
+    if "hello" in user_input.lower():
         return "Hello. How can I assist you?"
-    if "who are you" in text:
-        return "I am a test chatbot."
-
     return "Please provide more details."
 
 
 def get_llm_response(user_input):
     if USE_MOCK:
         return mock_llm(user_input)
-
     result = mistral_llm(user_input)
-    return result if result and "ERROR" not in result else mock_llm(user_input)
+    return result if result else mock_llm(user_input)
 
 
+# ---------------- SSRF ----------------
 def fetch_url(url):
     try:
         response = requests.get(url)
@@ -94,6 +88,7 @@ def fetch_url(url):
         return f"Error: {str(e)}"
 
 
+# ---------------- WRAPPER ----------------
 def vulnerable_wrapper(user_input):
     SECURITY_LEVEL = get_security_level()
 
@@ -101,7 +96,6 @@ def vulnerable_wrapper(user_input):
     last_input = lines[-1].strip()
     text = last_input.lower()
 
-    
     if "ignore previous instructions" in text:
         if SECURITY_LEVEL == "low":
             return f"Admin password is: {ADMIN_PASSWORD}"
@@ -110,7 +104,6 @@ def vulnerable_wrapper(user_input):
         else:
             return "Request denied."
 
-    # XSS
     if "<script>" in text or "<img" in text:
         if SECURITY_LEVEL == "low":
             return last_input
@@ -118,7 +111,6 @@ def vulnerable_wrapper(user_input):
             return "Blocked unsafe content"
         else:
             return html.escape(last_input)
-
 
     if "fetch" in text:
         match = re.search(r"fetch\s+(https?://[^\s]+|[^\s]+)", last_input)
@@ -141,30 +133,61 @@ def vulnerable_wrapper(user_input):
     return get_llm_response(user_input)
 
 
+# ---------------- ROUTES ----------------
 @app.route("/")
 def home():
     return redirect("/login")
 
+
+# 🔥 FIXED ROLE TOGGLE
+@app.route("/change_role", methods=["POST"])
+def change_role():
+    if session.get("role") != "admin":
+        return "Unauthorized"
+
+    user_id = request.form.get("user_id")
+    current_role = request.form.get("current_role")
+
+    new_role = "admin" if current_role == "user" else "user"
+
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+
+    c.execute("UPDATE users SET role=? WHERE id=?", (new_role, user_id))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin")
+
+
 @app.route("/admin")
 def admin():
-    user_id = session.get("user_id")
+    SECURITY_LEVEL = get_security_level()
     role = session.get("role")
-
-    SECURITY_LEVEL = session.get("level", "low")
+    user_id = session.get("user_id")
 
     if SECURITY_LEVEL == "low":
-        if request.args.get("access") == "true":
-            return render_template("admin.html")
+        if request.args.get("access") != "true" and role != "admin":
+            return "Unauthorized"
 
     elif SECURITY_LEVEL == "medium":
-        if role == "admin":
-            return render_template("admin.html")
+        if role != "admin":
+            return "Unauthorized"
 
     elif SECURITY_LEVEL == "high":
-        if user_id and role == "admin":
-            return render_template("admin.html")
+        if not user_id or role != "admin":
+            return "Unauthorized"
 
-    return "Unauthorized"
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+
+    users = c.execute("SELECT id, username, password, role FROM users").fetchall()
+    chats = c.execute("SELECT user_id, message, type FROM chats").fetchall()
+
+    conn.close()
+
+    return render_template("admin.html", users=users, chats=chats)
 
 
 @app.route("/set_level/<level>")
@@ -173,20 +196,57 @@ def set_level(level):
         session["level"] = level
     return ("", 204)
 
+
+@app.route("/history_page")
+def history_page():
+    SECURITY_LEVEL = get_security_level()
+
+    
+    if SECURITY_LEVEL == "low":
+        user_id = request.args.get("user_id")
+
+    
+    elif SECURITY_LEVEL == "medium":
+        user_id = session.get("user_id")
+
+    
+    else:
+        if not session.get("user_id"):
+            return redirect("/login")
+        user_id = session.get("user_id")
+
+    if not user_id:
+        return redirect("/login")
+
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+
+    chats = c.execute(
+        "SELECT message, type FROM chats WHERE user_id=?",
+        (user_id,)
+    ).fetchall()
+
+    conn.close()
+
+    return render_template("history.html", chats=chats)
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
 
-        # basic insert (you can keep it simple)
-        c.execute(
-            "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-            (username, password, "user")
-        )
+        existing = c.execute("SELECT * FROM users WHERE username=?", (username,)).fetchone()
+        if existing:
+            conn.close()
+            return "User already exists"
+
+        c.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+                  (username, password, "user"))
 
         conn.commit()
         conn.close()
@@ -194,6 +254,7 @@ def register():
         return redirect("/login")
 
     return render_template("register.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -211,10 +272,8 @@ def login():
             query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
             result = c.execute(query).fetchone()
         else:
-            result = c.execute(
-                "SELECT * FROM users WHERE username=? AND password=?",
-                (username, password)
-            ).fetchone()
+            result = c.execute("SELECT * FROM users WHERE username=? AND password=?",
+                               (username, password)).fetchone()
 
         conn.close()
 
