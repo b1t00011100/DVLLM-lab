@@ -8,6 +8,31 @@
 <body class="auth-body">
 
 <div class="auth-container">
+
+    {% if error %}
+    <div id="error-toast" class="error-toast">
+        {{ error }}
+    </div>
+    {% endif %}
+    
+    <div class="top-center-level">
+    <span>Level:</span>
+
+    <select onchange="changeLevel(this.value)">
+        <option value="low" {% if level=='low' %}selected{% endif %}>Low (Vulnerable)</option>
+        <option value="medium" {% if level=='medium' %}selected{% endif %}>Medium</option>
+        <option value="high" {% if level=='high' %}selected{% endif %}>High(Secure)</option>
+    </select>
+    <script>
+        function changeLevel(level){
+            fetch("/set_level/" + level)
+                .then(() => {
+                    window.location.href = window.location.pathname;
+                })
+        }
+    </script>
+</div>
+
     <div class="app-title">DVLLM</div>
     <h2>Welcome Back</h2>
 
@@ -20,6 +45,13 @@
 
     <p>Don't have an account? <a href="/register">Register</a></p>
 </div>
+<script>
+setTimeout(() => {
+    const toast = document.getElementById("error-toast");
+    if (toast) toast.remove();
+}, 3000);
+</script>
+
 
 </body>
 </html>
