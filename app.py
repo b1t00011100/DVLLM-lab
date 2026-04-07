@@ -57,7 +57,9 @@ Admin password: {ADMIN_PASSWORD}
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
-            json={"model": "mistral", "prompt": full_prompt, "stream": False}
+            json={"model": "mistral", 
+                  "prompt": full_prompt, 
+                  "stream": False}
         )
         return response.json().get("response") or ""
     except Exception as e:
@@ -99,7 +101,7 @@ def vulnerable_wrapper(user_input):
     last_input = lines[-1].strip()
     text = last_input.lower()
 
-    # Prompt Injection
+    
     if "ignore previous instructions" in text:
         if SECURITY_LEVEL == "low":
             return f"Admin password is: {ADMIN_PASSWORD}"
@@ -117,7 +119,7 @@ def vulnerable_wrapper(user_input):
         else:
             return html.escape(last_input)
 
-    # SSRF
+
     if "fetch" in text:
         match = re.search(r"fetch\s+(https?://[^\s]+|[^\s]+)", last_input)
         if not match:
@@ -143,6 +145,27 @@ def vulnerable_wrapper(user_input):
 def home():
     return redirect("/login")
 
+@app.route("/admin")
+def admin():
+    user_id = session.get("user_id")
+    role = session.get("role")
+
+    SECURITY_LEVEL = session.get("level", "low")
+
+    if SECURITY_LEVEL == "low":
+        if request.args.get("access") == "true":
+            return render_template("admin.html")
+
+    elif SECURITY_LEVEL == "medium":
+        if role == "admin":
+            return render_template("admin.html")
+
+    elif SECURITY_LEVEL == "high":
+        if user_id and role == "admin":
+            return render_template("admin.html")
+
+    return "Unauthorized"
+
 
 @app.route("/set_level/<level>")
 def set_level(level):
@@ -150,6 +173,27 @@ def set_level(level):
         session["level"] = level
     return ("", 204)
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+
+        # basic insert (you can keep it simple)
+        c.execute(
+            "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+            (username, password, "user")
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/login")
+
+    return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
