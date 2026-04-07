@@ -339,3 +339,41 @@ input:checked + .slider:before {
     background-color: #1e293b;
     color: white;
 }
+
+.top-center-level {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.top-center-level select {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: none;
+    background: #1e293b;
+    color: white;
+}
+
+.error-toast {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: #ef4444;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    animation: fadeOut 3s forwards;
+    font-size: 14px;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
