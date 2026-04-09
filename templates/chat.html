@@ -62,9 +62,12 @@
     const chatContainer = document.getElementById("chat-container");
     chatContainer.scrollTop = chatContainer.scrollHeight;
 </script>
- <script>
-    function changeLevel(level) {
-    window.location.href = "/set_level/" + level;
+<script>
+function changeLevel(level) {
+    fetch("/set_level/" + level)
+        .then(() => {
+            location.reload();
+        });
 }
 </script>
 
